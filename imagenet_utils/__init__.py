@@ -6,7 +6,7 @@ def index_to_wordnetid(index: int) -> str:
     return IN1K_CLASSES[index]
 
 
-def indces_to_wordnetids(indices):
+def indices_to_wordnetids(indices):
     return [index_to_wordnetid(index) for index in indices]
 
 
