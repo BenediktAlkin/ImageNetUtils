@@ -23,6 +23,8 @@ print(index_to_wordnetid(5))
 ```
 
 ## Classes of a high-level WordNet id
+A good visualization of the ImageNet hierarchy can be found [here](https://observablehq.com/@mbostock/imagenet-hierarchy).
+
 ``` python
 from imagenet_utils import wordnetid_to_leafwordnetids, wordnetid_to_leafnames
 # n02120997 is "feline"
