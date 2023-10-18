@@ -14,7 +14,7 @@ def wordnetid_to_index(wordnetid: str) -> int:
     return IN1K_CLASSES.index(wordnetid)
 
 
-def wordnetids_to_indces(wordnetids):
+def wordnetids_to_indices(wordnetids):
     return [wordnetid_to_index(wordnetid) for wordnetid in wordnetids]
 
 
