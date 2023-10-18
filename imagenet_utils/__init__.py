@@ -1,6 +1,7 @@
 from .metadata import CLASS_NAMES, CLASS_HIERARCHY
 from .versions.in1k import CLASSES as IN1K_CLASSES
 
+
 def index_to_wordnetid(index: int) -> str:
     return IN1K_CLASSES[index]
 
@@ -48,6 +49,7 @@ def node_to_leafwordnetids(node):
     result = _node_to_leafwordnetids(node=node, result=[])
     return list(sorted(result))
 
+
 def _node_to_leafwordnetids(node, result):
     children = node["children"]
     if len(children) == 0:
@@ -56,3 +58,8 @@ def _node_to_leafwordnetids(node, result):
     for child in children:
         _node_to_leafwordnetids(node=child, result=result)
     return result
+
+
+def wordnetid_to_leafwordnetids(wordnetid: str):
+    node = wordnetid_to_node(wordnetid)
+    return node_to_leafwordnetids(node)

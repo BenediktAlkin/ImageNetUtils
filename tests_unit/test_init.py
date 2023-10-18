@@ -1,5 +1,13 @@
 import unittest
-from imagenet_utils import index_to_wordnetid, wordnetid_to_index, wordnetid_to_node, node_to_leafwordnetids
+from imagenet_utils import (
+    index_to_wordnetid,
+    wordnetid_to_index,
+    wordnetid_to_node,
+    node_to_leafwordnetids,
+    wordnetid_to_leafwordnetids,
+    index_to_classnames,
+    index_to_shortest_classname,
+)
 from imagenet_utils.versions import IN13_FELINES_CLASSES
 
 class TestInit(unittest.TestCase):
@@ -9,7 +17,12 @@ class TestInit(unittest.TestCase):
         for i in range(1000):
             self.assertEqual(i, wordnetid_to_index(index_to_wordnetid(i)))
 
+    def test_index_to_name(self):
+        self.assertEqual(["leopard", "Panthera pardus"], index_to_classnames(288))
+        self.assertEqual("leopard", index_to_shortest_classname(288))
+
     def test_wordnetid_to_node(self):
         feline_node = wordnetid_to_node("n02120997")
         leafs = node_to_leafwordnetids(feline_node)
         self.assertEqual(IN13_FELINES_CLASSES, leafs)
+        self.assertEqual(IN13_FELINES_CLASSES, wordnetid_to_leafwordnetids("n02120997"))
