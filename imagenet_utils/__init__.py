@@ -63,3 +63,7 @@ def _node_to_leafwordnetids(node, result):
 def wordnetid_to_leafwordnetids(wordnetid: str):
     node = wordnetid_to_node(wordnetid)
     return node_to_leafwordnetids(node)
+
+def wordnetid_to_leafnames(wordnetid: str):
+    leafwordnetids = wordnetid_to_leafwordnetids(wordnetid)
+    return [wordnetid_to_shortest_classname(leafwordnetid) for leafwordnetid in leafwordnetids]
