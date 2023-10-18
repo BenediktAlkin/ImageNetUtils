@@ -1,6 +1,6 @@
 # ImageNetUtils
 
-Utilities for working with ImageNet subsets.
+Utilities for analyzing ImageNet classes.
 
 # Setup
 `pip install git+https://github.com/BenediktAlkin/ImageNetUtils`
