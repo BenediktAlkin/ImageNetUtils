@@ -10,16 +10,16 @@ def wordnetid_to_index(wordnetid: str) -> int:
     return IN1K_CLASSES.index(wordnetid)
 
 
-def index_to_classnames(index: int):
+def index_to_names(index: int):
     return CLASS_NAMES[index]
 
 
-def wordnetid_to_classnames(wordnetid: str):
+def wordnetid_to_names(wordnetid: str):
     index = wordnetid_to_index(wordnetid)
-    return index_to_classnames(index)
+    return index_to_names(index)
 
 
-def index_to_shortest_classname(index: int) -> str:
+def index_to_shortest_name(index: int) -> str:
     min_len = float("inf")
     min_name = None
     for name in CLASS_NAMES[index]:
@@ -29,9 +29,9 @@ def index_to_shortest_classname(index: int) -> str:
     return min_name
 
 
-def wordnetid_to_shortest_classname(wordnetid: str) -> str:
+def wordnetid_to_shortest_name(wordnetid: str) -> str:
     index = wordnetid_to_index(wordnetid)
-    return index_to_shortest_classname(index)
+    return index_to_shortest_name(index)
 
 
 def wordnetid_to_node(wordnetid: str):
@@ -66,4 +66,8 @@ def wordnetid_to_leafwordnetids(wordnetid: str):
 
 def wordnetid_to_leafnames(wordnetid: str):
     leafwordnetids = wordnetid_to_leafwordnetids(wordnetid)
-    return [wordnetid_to_shortest_classname(leafwordnetid) for leafwordnetid in leafwordnetids]
+    return [wordnetid_to_shortest_name(leafwordnetid) for leafwordnetid in leafwordnetids]
+
+def wordnetid_to_leafindices(wordnetid: str):
+    leafwordnetids = wordnetid_to_leafwordnetids(wordnetid)
+    return [wordnetid_to_index(leafwordnetid) for leafwordnetid in leafwordnetids]
