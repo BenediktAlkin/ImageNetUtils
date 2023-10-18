@@ -6,8 +6,16 @@ def index_to_wordnetid(index: int) -> str:
     return IN1K_CLASSES[index]
 
 
+def indces_to_wordnetids(indices):
+    return [index_to_wordnetid(index) for index in indices]
+
+
 def wordnetid_to_index(wordnetid: str) -> int:
     return IN1K_CLASSES.index(wordnetid)
+
+
+def wordnetids_to_indces(wordnetids):
+    return [wordnetid_to_index(wordnetid) for wordnetid in wordnetids]
 
 
 def index_to_names(index: int):
@@ -64,9 +72,11 @@ def wordnetid_to_leafwordnetids(wordnetid: str):
     node = wordnetid_to_node(wordnetid)
     return node_to_leafwordnetids(node)
 
+
 def wordnetid_to_leafnames(wordnetid: str):
     leafwordnetids = wordnetid_to_leafwordnetids(wordnetid)
     return [wordnetid_to_shortest_name(leafwordnetid) for leafwordnetid in leafwordnetids]
+
 
 def wordnetid_to_leafindices(wordnetid: str):
     leafwordnetids = wordnetid_to_leafwordnetids(wordnetid)
