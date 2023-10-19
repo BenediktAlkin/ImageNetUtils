@@ -90,20 +90,21 @@ def wordnetid_to_leafindices(wordnetid: str):
     leafwordnetids = wordnetid_to_leafwordnetids(wordnetid)
     return [wordnetid_to_index(leafwordnetid) for leafwordnetid in leafwordnetids]
 
-
-def name_to_node(name: str):
-    result = []
-    _name_to_node(node=dict(id=None, names=["root"], children=METADATA), name=name, result=result)
-    # remove duplicates
+def _deduplicate_nodes(nodes):
     i = 0
-    while i < len(result):
+    while i < len(nodes):
         j = i + 1
-        while j < len(result):
-            if result[i] == result[j]:
-                result.pop(j)
+        while j < len(nodes):
+            if nodes[i] == nodes[j]:
+                nodes.pop(j)
             else:
                 j += 1
         i += 1
+    return nodes
+
+def name_to_node(name: str):
+    result = _name_to_node(node=dict(id=None, names=["root"], children=METADATA), name=name, result=result)
+    result = _deduplicate_nodes(result)
     if len(result) > 1:
         ids = ", ".join([node["id"] for node in result])
         raise ValueError(f"name '{name}' is not unique ({ids})")
@@ -115,6 +116,7 @@ def _name_to_node(node, name: str, result):
             result.append(node)
     for child in node["children"]:
         _name_to_node(node=child, name=name, result=result)
+    return result
 
 def name_to_wordnetid(name: str) -> str:
     node = name_to_node(name)
@@ -124,3 +126,16 @@ def name_to_wordnetid(name: str) -> str:
 def name_to_leafindices(name: str):
     wordnetid = name_to_wordnetid(name)
     return wordnetid_to_leafindices(wordnetid)
+
+def get_all_nonleaf_wordnetids():
+    nodes = _get_all_nonleaf_wordnetids(node=dict(id=None, names=["root"], children=METADATA), result=[])
+    nodes = _deduplicate_nodes(nodes)
+    return [node["id"] for node in nodes]
+
+def _get_all_nonleaf_wordnetids(node, result):
+    children = node["children"]
+    if len(children) > 1 and node["id"] is not None:
+        result.append(node)
+    for child in children:
+        _get_all_nonleaf_wordnetids(node=child, result=result)
+    return result

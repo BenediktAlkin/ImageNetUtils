@@ -128,3 +128,6 @@ class TestInit(unittest.TestCase):
 
     def test_in57_structure(self):
         self.assertEqual(57, len(name_to_leafindices("structure")))
+
+    def test_getall(self):
+        self.assertEqual(376, len(get_all_nonleaf_wordnetids()))
