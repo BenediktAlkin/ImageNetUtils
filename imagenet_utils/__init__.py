@@ -92,19 +92,29 @@ def wordnetid_to_leafindices(wordnetid: str):
 
 
 def name_to_node(name: str):
-    return _name_to_node(node=dict(id=None, names=["root"], children=METADATA), name=name)
+    result = []
+    _name_to_node(node=dict(id=None, names=["root"], children=METADATA), name=name, result=result)
+    # remove duplicates
+    i = 0
+    while i < len(result):
+        j = i + 1
+        while j < len(result):
+            if result[i] == result[j]:
+                result.pop(j)
+            else:
+                j += 1
+        i += 1
+    if len(result) > 1:
+        ids = ", ".join([node["id"] for node in result])
+        raise ValueError(f"name '{name}' is not unique ({ids})")
+    return result[0]
 
-
-def _name_to_node(node, name: str):
+def _name_to_node(node, name: str, result):
     for i in range(len(node["names"])):
         if node["names"][i] == name:
-            return node
+            result.append(node)
     for child in node["children"]:
-        result = _name_to_node(node=child, name=name)
-        if result is not None:
-            return result
-    return None
-
+        _name_to_node(node=child, name=name, result=result)
 
 def name_to_wordnetid(name: str) -> str:
     node = name_to_node(name)
