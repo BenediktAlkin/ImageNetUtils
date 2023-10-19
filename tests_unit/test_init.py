@@ -50,6 +50,11 @@ class TestInit(unittest.TestCase):
         feline_leafindices = wordnetid_to_leafindices("n02120997")
         self.assertEqual(wordnetids_to_indices(IN13_FELINES_CLASSES), feline_leafindices)
 
+    def test_wordnetid_to_leafindices_no_duplicates(self):
+        animal_wordnetid = name_to_wordnetid("animal")
+        animal_leafindices = wordnetid_to_leafindices(animal_wordnetid)
+        self.assertEqual(398, len(animal_leafindices))
+
     def test_name_to_node(self):
         feline_node = name_to_node("feline")
         leafs = node_to_leafwordnetids(feline_node)

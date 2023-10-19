@@ -56,6 +56,7 @@ def wordnetid_to_shortest_name(wordnetid: str) -> str:
             min_name = name
     return min_name
 
+
 def wordnetids_to_shortest_name(wordnetids):
     return [wordnetid_to_shortest_name(wordnetid) for wordnetid in wordnetids]
 
@@ -93,6 +94,7 @@ def wordnetid_to_leafindices(wordnetid: str):
 def name_to_node(name: str):
     return _name_to_node(node=dict(id=None, names=["root"], children=METADATA), name=name)
 
+
 def _name_to_node(node, name: str):
     for i in range(len(node["names"])):
         if node["names"][i] == name:
@@ -103,9 +105,11 @@ def _name_to_node(node, name: str):
             return result
     return None
 
+
 def name_to_wordnetid(name: str) -> str:
     node = name_to_node(name)
     return node["id"]
+
 
 def name_to_leafindices(name: str):
     wordnetid = name_to_wordnetid(name)
