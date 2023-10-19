@@ -55,7 +55,7 @@ def wordnetid_to_node(wordnetid: str):
 
 def node_to_leafwordnetids(node):
     result = _node_to_leafwordnetids(node=node, result=[])
-    return list(sorted(result))
+    return list(sorted(set(result)))
 
 
 def _node_to_leafwordnetids(node, result):
