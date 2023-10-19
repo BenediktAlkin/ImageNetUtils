@@ -139,3 +139,12 @@ def _get_all_nonleaf_wordnetids(node, result):
     for child in children:
         _get_all_nonleaf_wordnetids(node=child, result=result)
     return result
+
+def get_all_hierarchies():
+    hierarchy_wordnetids = get_all_nonleaf_wordnetids()
+    hierarchies = [wordnetid_to_leafindices(wordnetid) for wordnetid in hierarchy_wordnetids]
+    # it is possible that a hierarchy has only 1 leafnode if it branches into two hierarchies that each have only 1
+    # child and the child is equal to the child of the other hierarchy
+    # example: n02760429: automatic firearm
+    hierarchies = [hierarchy for hierarchy in hierarchies if len(hierarchy) > 1]
+    return hierarchies

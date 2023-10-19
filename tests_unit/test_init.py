@@ -131,3 +131,14 @@ class TestInit(unittest.TestCase):
 
     def test_getall(self):
         self.assertEqual(376, len(get_all_nonleaf_wordnetids()))
+
+    def test_getall_hierarchies(self):
+        hierarchies = get_all_hierarchies()
+        self.assertEqual(375, len(hierarchies))
+        counts = {}
+        for hierarchy in hierarchies:
+            if len(hierarchy) not in counts:
+                counts[len(hierarchy)] = 1
+            else:
+                counts[len(hierarchy)] += 1
+        self.assertNotIn(1, counts)
