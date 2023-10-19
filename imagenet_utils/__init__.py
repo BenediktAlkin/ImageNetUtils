@@ -103,7 +103,7 @@ def _deduplicate_nodes(nodes):
     return nodes
 
 def name_to_node(name: str):
-    result = _name_to_node(node=dict(id=None, names=["root"], children=METADATA), name=name, result=result)
+    result = _name_to_node(node=dict(id=None, names=["root"], children=METADATA), name=name, result=[])
     result = _deduplicate_nodes(result)
     if len(result) > 1:
         ids = ", ".join([node["id"] for node in result])
