@@ -35,3 +35,12 @@ print(wordnetid_to_leafnames("n02120997"))
 print(wordnetid_to_leafindices("n02120997"))
 # [281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 293]
 ```
+
+## Class name to WordNet id
+``` python
+from imagenet_utils import index_to_wordnetid
+print(name_to_wordnetid("feline"))
+# n02120997
+```
+
+## Word

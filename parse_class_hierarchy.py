@@ -14,6 +14,8 @@ def create_tree(root_dict, level=0):
         for child in root_dict["children"]:
             print("\t" * (level + 1) + "{")
             print("\t" * (level + 2) + f'"id": "{child["id"]}",')
+            names = ", ".join([f'"{name}"' for name in child["name"].split(", ")])
+            print("\t" * (level + 2) + f'"names": [{names}],')
             if "children" in child:
                 print("\t" * (level + 2) + f'"children":')
                 create_tree(root_dict=child, level=level + 2)
@@ -24,7 +26,7 @@ def create_tree(root_dict, level=0):
 
 
 def main():
-    with open("temp.json") as f:
+    with open("mobilenet.json") as f:
         data = json.load(f)
     create_tree(root_dict=data)
 

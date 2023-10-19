@@ -1,4 +1,4 @@
-from .metadata import CLASS_NAMES, CLASS_HIERARCHY
+from .metadata import METADATA
 from .versions.in1k import CLASSES as IN1K_CLASSES
 
 
@@ -19,38 +19,45 @@ def wordnetids_to_indices(wordnetids):
 
 
 def index_to_names(index: int):
-    return CLASS_NAMES[index]
+    wordnetid = index_to_wordnetid(index)
+    return wordnetid_to_names(wordnetid)
 
 
 def wordnetid_to_names(wordnetid: str):
-    index = wordnetid_to_index(wordnetid)
-    return index_to_names(index)
+    node = wordnetid_to_node(wordnetid)
+    return node["names"]
+
+
+def wordnetid_to_node(wordnetid: str):
+    return _wordnetid_to_node(node=dict(id=None, names=["root"], children=METADATA), wordnetid=wordnetid)
+
+
+def _wordnetid_to_node(node, wordnetid: str):
+    if node["id"] == wordnetid:
+        return node
+    for child in node["children"]:
+        result = _wordnetid_to_node(node=child, wordnetid=wordnetid)
+        if result is not None:
+            return result
+    return None
 
 
 def index_to_shortest_name(index: int) -> str:
+    wordnetid = index_to_wordnetid(index)
+    return wordnetid_to_shortest_name(wordnetid)
+
+
+def wordnetid_to_shortest_name(wordnetid: str) -> str:
     min_len = float("inf")
     min_name = None
-    for name in CLASS_NAMES[index]:
+    for name in wordnetid_to_names(wordnetid):
         if len(name) < min_len:
             min_len = len(name)
             min_name = name
     return min_name
 
-
-def wordnetid_to_shortest_name(wordnetid: str) -> str:
-    index = wordnetid_to_index(wordnetid)
-    return index_to_shortest_name(index)
-
-
-def wordnetid_to_node(wordnetid: str):
-    stack = [node for node in CLASS_HIERARCHY]
-    while len(stack) > 0:
-        node = stack.pop()
-        if node["id"] == wordnetid:
-            return node
-        if len(node["children"]) > 0:
-            stack += node["children"]
-    raise ValueError(f"WordNet id '{wordnetid}' was not found in hierarchy")
+def wordnetids_to_shortest_name(wordnetids):
+    return [wordnetid_to_shortest_name(wordnetid) for wordnetid in wordnetids]
 
 
 def node_to_leafwordnetids(node):
@@ -81,3 +88,25 @@ def wordnetid_to_leafnames(wordnetid: str):
 def wordnetid_to_leafindices(wordnetid: str):
     leafwordnetids = wordnetid_to_leafwordnetids(wordnetid)
     return [wordnetid_to_index(leafwordnetid) for leafwordnetid in leafwordnetids]
+
+
+def name_to_node(name: str):
+    return _name_to_node(node=dict(id=None, names=["root"], children=METADATA), name=name)
+
+def _name_to_node(node, name: str):
+    for i in range(len(node["names"])):
+        if node["names"][i] == name:
+            return node
+    for child in node["children"]:
+        result = _name_to_node(node=child, name=name)
+        if result is not None:
+            return result
+    return None
+
+def name_to_wordnetid(name: str) -> str:
+    node = name_to_node(name)
+    return node["id"]
+
+def name_to_leafindices(name: str):
+    wordnetid = name_to_wordnetid(name)
+    return wordnetid_to_leafindices(wordnetid)
